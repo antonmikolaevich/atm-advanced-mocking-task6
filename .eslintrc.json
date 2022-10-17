@@ -1,15 +1,29 @@
 {
     "env": {
-        "commonjs": true,
-        "es2020": true,
+        "es2021": true,
         "node": true
     },
-    "extends": [
-        "standard"
+    "extends": "eslint:recommended",
+    "overrides": [
     ],
     "parserOptions": {
-        "ecmaVersion": 11
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
     "rules": {
+        "no-undef": "warn",
+        "no-unused-vars": "warn",
+        "no-useless-escape": "off",
+        "no-useless-catch": "off",
+        "no-mixed-spaces-and-tabs": "off",
+        "no-func-assign": "warn",
+        "no-unsafe-finally": "off",
+        "no-cond-assign": "off",
+        "no-prototype-builtins": "off",
+        "getter-return": "off",
+        "no-empty": "off",
+        "no-fallthrough": "off",
+        "no-misleading-character-class": "off",
+        "valid-typeof": "off"
     }
 }

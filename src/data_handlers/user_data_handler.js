@@ -19,12 +19,21 @@ class UserDataHandler {
    * @return {Promise} if successful updates users array of the calass instance
    * @memberof UserDataHandler
    */
-  async loadUsers () {
-    const response = await axios.get('http://localhost:3000/users').catch(err => {
+
+
+  async loadUsers (url) {
+    try {
+      const response = await axios.get(url);
+      if (typeof response.status === 'number'){
+              this.users = response.data;
+            } else {
+              this.users = response;
+            }
+            return this.users;
+    } catch (err) {
       throw new Error(`Failed to load users data: ${err}`)
-    })
-    this.users = response.data
-  }
+    }
+}
 
   /**
    *
@@ -76,12 +85,13 @@ class UserDataHandler {
    * @memberof UserDataHandler
    */
   findUsers (searchParamsObject) {
-    if (!searchParamsObject) throw new Error('No search parameters provoded!')
-    if (this.users.length === 0) throw new Error('No users loaded!')
+   if (!searchParamsObject) throw new Error('No search parameters provided!')
+   if (this.users.length === 0) throw new Error('No users loaded!')
     const matchingUsers = this.users.filter(user => this.isMatchingAllSearchParams(user, searchParamsObject))
-    if (matchingUsers.length === 0) throw new Error('No matching users found!')
+   if (matchingUsers.length === 0) throw new Error('No matching users found!')
     return matchingUsers
   }
 }
 
-module.exports = UserDataHandler
+
+module.exports =  UserDataHandler
