@@ -18,6 +18,9 @@ describe("unit tests with stub", async () => {
     const userDataHandler = new UserDataHandler();
 
 
+ describe("unit tests with nock", async () => {   
+
+
     it("should return usersList with properties from loadUsers method - nock", async () => {
       nock('http://localhost:3000')
         .get('/users')
@@ -148,6 +151,15 @@ describe("unit tests with stub", async () => {
       }
     })
 
+  })   
+
+
+  describe("unit test with sinon stub", async () => {
+
+    afterEach(() => {
+      stub.restore();
+    })
+
 
     it("should return usersList with properties from loadUsers method - sinon", async () => {
         stub = sinon.stub(axios, 'get').resolves(responseBody);
@@ -158,7 +170,6 @@ describe("unit tests with stub", async () => {
             expect(item).to.have.property('name');
             expect(item).to.have.property('username');
             expect(item).to.have.property('email');
-            stub.restore();
         })
     })
 
@@ -170,15 +181,12 @@ describe("unit tests with stub", async () => {
         } catch (error) {
             expect(error.message).to.include(`Sorry can't find that!`);
         }
-        
-        stub.restore();
     })
 
     it("should return length of userList - sinon", async () => {
       stub = sinon.stub(axios, 'get').resolves(responseBody);
       const response = await userDataHandler.loadUsers('http://localhost:3000/users');
       expect(userDataHandler.getNumberOfUsers()).to.equal(response.length);
-        stub.restore();
     })
 
 
@@ -189,7 +197,6 @@ describe("unit tests with stub", async () => {
             item.email)
        const listOfUSerEmails = responseList.join(';')    
        expect(userDataHandler.getUserEmailsList()).to.equal(listOfUSerEmails);
-       stub.restore();
     })
 
     it("should return No users loaded! if the userList is empty - sinon", async () => {
@@ -199,8 +206,7 @@ describe("unit tests with stub", async () => {
           await userDataHandler.getUserEmailsList();
           } catch (error) {
             expect(error.message).to.equal('No users loaded!');
-          }
-        stub.restore();          
+          }       
     })
 
 
@@ -208,8 +214,7 @@ describe("unit tests with stub", async () => {
         stub = sinon.stub(axios, 'get').resolves(fakeUser);
         const response = await userDataHandler.loadUsers('http://localhost:3000/users');
         let actUser = response;
-        expect(userDataHandler.isMatchingAllSearchParams(actUser, expectedUser)).to.be.true; 
-        stub.restore();
+        expect(userDataHandler.isMatchingAllSearchParams(actUser, expectedUser)).to.be.true;
     })
 
     it("should return false if key parameters in users objects are not matched - sinon", async () => {
@@ -217,7 +222,6 @@ describe("unit tests with stub", async () => {
       const response = await userDataHandler.loadUsers('http://localhost:3000/users');
       let actUser = response;
       expect(userDataHandler.isMatchingAllSearchParams(actUser, incorrectExpUser)).to.be.false;
-      stub.restore(); 
     })
 
 
@@ -227,7 +231,6 @@ describe("unit tests with stub", async () => {
       const expResponse = await userDataHandler.findUsers(expectedUser);
       expect(expResponse.length).not.to.equal(0);
       expect(expResponse.length).to.equal(1);
-      stub.restore();
     })
 
 
@@ -239,7 +242,6 @@ describe("unit tests with stub", async () => {
       } catch (error) {
         expect(error.message).to.equal('No matching users found!');
       }
-      stub.restore();
     })
 
 
@@ -251,7 +253,6 @@ describe("unit tests with stub", async () => {
       } catch (error) {
         expect(error.message).to.equal('No users loaded!');
       }
-      stub.restore();
     })
 
 
@@ -263,7 +264,8 @@ describe("unit tests with stub", async () => {
       } catch (error) {
         expect(error.message).to.equal('No search parameters provided!');
       }
-      stub.restore();
     })
+
+  })  
 
 })
