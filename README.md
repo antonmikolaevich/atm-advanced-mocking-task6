@@ -22,4 +22,3 @@ To do so you need to execute the following command in a separate terminal:
 ```
 npm run server-start
 ```
-
